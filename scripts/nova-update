@@ -1,0 +1,4 @@
+#!/bin/bash
+echo "Updating Nova OS..."
+sudo apt update && sudo apt upgrade -y
+echo "Nova OS is up to date."
