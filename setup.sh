@@ -21,3 +21,7 @@ mkdir -p ~/.config/fastfetch
 cp config/fastfetch.jsonc ~/.config/fastfetch/config.jsonc
 sudo install -m 644 config/nova-prompt.sh /etc/nova-prompt.sh
 grep -q nova-prompt ~/.bashrc || echo 'source /etc/nova-prompt.sh' >> ~/.bashrc
+
+# Nova OS commands
+sudo install -m 755 scripts/nova-version /usr/local/bin/nova-version
+sudo install -m 755 scripts/nova-info /usr/local/bin/nova-info

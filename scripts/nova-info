@@ -1,0 +1,7 @@
+#!/bin/bash
+fastfetch
+echo
+echo "Nova OS commands:"
+echo "  nova-update   update the system"
+echo "  nova-version  show the Nova OS version"
+echo "  nova-info     show this screen"
