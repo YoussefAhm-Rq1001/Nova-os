@@ -10,4 +10,5 @@ sudo cp config/motd /etc/motd
 
 echo "Nova OS installed! Restart your terminal."
 
-sudo sed -i "s/^PRETTY_NAME=.*/PRETTY_NAME=\"Nova OS 0.1\"/" /etc/os-release
+sudo sed -i --follow-symlinks "s/^PRETTY_NAME=.*/PRETTY_NAME=\"Nova OS 0.1\"/" /etc/os-release
+sudo sed -i --follow-symlinks 's/^NAME=.*/NAME="Nova OS"/; s/^VERSION=.*/VERSION="0.1"/' /etc/os-release
