@@ -14,3 +14,10 @@ sudo sed -i --follow-symlinks "s/^PRETTY_NAME=.*/PRETTY_NAME=\"Nova OS 0.1\"/" /
 sudo sed -i --follow-symlinks 's/^NAME=.*/NAME="Nova OS"/; s/^VERSION=.*/VERSION="0.1"/' /etc/os-release
 sudo sed -i --follow-symlinks 's/^NAME=.*/NAME="Nova OS"/; s/^VERSION=.*/VERSION="0.1"/' /etc/os-release
 sudo install -m 755 scripts/nova-update /usr/local/bin/nova-update
+
+# Nova OS look and feel
+sudo install -m 644 config/wsl.conf /etc/wsl.conf
+mkdir -p ~/.config/fastfetch
+cp config/fastfetch.jsonc ~/.config/fastfetch/config.jsonc
+sudo install -m 644 config/nova-prompt.sh /etc/nova-prompt.sh
+grep -q nova-prompt ~/.bashrc || echo 'source /etc/nova-prompt.sh' >> ~/.bashrc

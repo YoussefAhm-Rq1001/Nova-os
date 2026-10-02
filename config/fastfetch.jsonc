@@ -1,0 +1,4 @@
+{
+  "logo": { "type": "small" },
+  "modules": ["title", "separator", "os", "kernel", "uptime", "packages", "shell", "cpu", "memory", "disk"]
+}
