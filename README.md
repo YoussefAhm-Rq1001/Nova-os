@@ -10,7 +10,7 @@ Nova OS is a custom Linux environment for WSL, based on Ubuntu.
 
 2. Open Ubuntu, then run:
 
-       git clone https://github.com/YoussefAhm-Rq1001/nova-os
+       git clone https://github.com/YoussefAhm-Rq1001/Nova-os
        cd nova-os
        bash setup.sh
 
