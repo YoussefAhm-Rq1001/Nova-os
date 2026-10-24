@@ -22,7 +22,7 @@ Signed-By: $keyrings/microsoft.gpg
 EOF
 
 if [ ! -f /etc/apt/sources.list.d/microsoft-prod.list ] && [ ! -f /etc/apt/sources.list.d/microsoft-prod.sources ]; then
-  . /etc/os-release
+  . /usr/lib/os-release
   curl -fsSLo /tmp/packages-microsoft-prod.deb "https://packages.microsoft.com/config/ubuntu/${VERSION_ID}/packages-microsoft-prod.deb"
   dpkg -i /tmp/packages-microsoft-prod.deb
 fi
