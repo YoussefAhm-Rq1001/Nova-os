@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE wallpapers SYSTEM "gnome-wp-list.dtd">
+<wallpapers>
+  <wallpaper deleted="false"><name>Nova Space</name><filename>/usr/share/backgrounds/nova/nova-space.svg</filename><options>zoom</options><shade_type>solid</shade_type><pcolor>#080f22</pcolor><scolor>#080f22</scolor></wallpaper>
+  <wallpaper deleted="false"><name>Nova Nebula</name><filename>/usr/share/backgrounds/nova/nova-nebula.svg</filename><options>zoom</options><shade_type>solid</shade_type><pcolor>#080f22</pcolor><scolor>#080f22</scolor></wallpaper>
+</wallpapers>
