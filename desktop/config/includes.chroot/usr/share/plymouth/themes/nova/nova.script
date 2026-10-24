@@ -1,0 +1,14 @@
+Window.SetBackgroundTopColor(0.01, 0.02, 0.06);
+Window.SetBackgroundBottomColor(0.01, 0.02, 0.06);
+logo_image = Image("nova-mark.png");
+logo_sprite = Sprite(logo_image);
+logo_sprite.SetX(Window.GetX() + Window.GetWidth() / 2 - logo_image.GetWidth() / 2);
+logo_sprite.SetY(Window.GetY() + Window.GetHeight() / 2 - logo_image.GetHeight() / 2 - 70);
+title_image = Image.Text("NOVA OS", 1, 1, 1);
+title_sprite = Sprite(title_image);
+title_sprite.SetX(Window.GetX() + Window.GetWidth() / 2 - title_image.GetWidth() / 2);
+title_sprite.SetY(Window.GetY() + Window.GetHeight() / 2 + 65);
+credit_image = Image.Text("BUILT BY YOUSSEF AHMED", 0.72, 0.79, 0.91);
+credit_sprite = Sprite(credit_image);
+credit_sprite.SetX(Window.GetX() + Window.GetWidth() / 2 - credit_image.GetWidth() / 2);
+credit_sprite.SetY(Window.GetY() + Window.GetHeight() / 2 + 108);
