@@ -21,17 +21,30 @@ Architectures: amd64 arm64 armhf
 Signed-By: $keyrings/microsoft.gpg
 EOF
 
-if [ ! -f /etc/apt/sources.list.d/microsoft-prod.list ] && [ ! -f /etc/apt/sources.list.d/microsoft-prod.sources ]; then
-  . /usr/lib/os-release
-  curl -fsSLo /tmp/packages-microsoft-prod.deb "https://packages.microsoft.com/config/ubuntu/${VERSION_ID}/packages-microsoft-prod.deb"
-  dpkg -i /tmp/packages-microsoft-prod.deb
-fi
-
 apt-get update
 if [ "$arch" = amd64 ] || [ "$arch" = arm64 ]; then
   apt-get install -y --no-install-recommends google-chrome-stable
 else
   echo "Google Chrome stable is not published for $arch; skipping Chrome." >&2
 fi
-apt-get install -y --no-install-recommends brave-browser code powershell
+apt-get install -y --no-install-recommends brave-browser code
+
+case "$arch" in
+  amd64)
+    ps_deb=powershell-lts_7.6.8-1.deb_amd64.deb
+    ps_sha256=E94CE70C2EBEBC6B206A743B2BC9C40DC92744882EA399F202BACC5EA08AF66C
+    ;;
+  arm64)
+    ps_deb=powershell-lts_7.6.8-1.deb_arm64.deb
+    ps_sha256=C2F67375AD4370DAAA14D825B5731F360C46E71DC77356149C92F919E48B55DD
+    ;;
+  *)
+    echo "PowerShell LTS release packages are not published for $arch." >&2
+    exit 1
+    ;;
+esac
+ps_path="/var/cache/apt/archives/$ps_deb"
+curl -fsSLo "$ps_path" "https://github.com/PowerShell/PowerShell/releases/download/v7.6.8/$ps_deb"
+printf '%s  %s\n' "$ps_sha256" "$ps_path" | sha256sum -c -
+apt-get install -y --no-install-recommends "$ps_path"
 exit 0
