@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=Nova OS
+Description=Nova star mark with Nova OS branding
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/nova
+ScriptFile=/usr/share/plymouth/themes/nova/nova.script
