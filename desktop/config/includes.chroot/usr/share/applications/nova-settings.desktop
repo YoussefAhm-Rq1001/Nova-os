@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Nova Settings
+Comment=Adjust display, sound, network, power, users, and appearance
+Exec=gnome-control-center
+Icon=org.gnome.Settings
+Terminal=false
+Type=Application
+Categories=Settings;DesktopSettings;
+Keywords=display;wifi;network;sound;power;users;wallpaper;fonts;
