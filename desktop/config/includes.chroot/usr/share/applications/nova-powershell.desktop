@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=PowerShell
+Comment=Open PowerShell 7
+Exec=kgx -- pwsh
+Icon=utilities-terminal
+Terminal=false
+Type=Application
+Categories=System;TerminalEmulator;
+Keywords=powershell;pwsh;terminal;shell;
