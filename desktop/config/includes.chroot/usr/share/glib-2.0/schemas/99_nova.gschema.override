@@ -23,4 +23,4 @@ dock-fixed=true
 dash-max-icon-size=48
 transparency-mode='FIXED'
 background-opacity=0.24
-show-apps-always-in-dock=true
+show-show-apps-button=true
