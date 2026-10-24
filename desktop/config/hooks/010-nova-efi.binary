@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+set -euo pipefail
+# live-build runs this hook after assembling the ISO tree and before image creation.
+# CONFIG_EFI_MIXED=y in the x86_64 kernel allows an IA32 EFI loader to start it.
+for tool in grub-mkstandalone grub-script-check mkfs.vfat mmd mcopy; do
+  command -v "$tool" >/dev/null || {
+    printf 'Required EFI build tool not found: %s\n' "$tool" >&2
+    exit 1
+  }
+done
+shopt -s nullglob
+kernels=(binary/casper/vmlinuz-*)
+initrds=(binary/casper/initrd.img-*)
+if (("${#kernels[@]}" != 1 || "${#initrds[@]}" != 1)); then
+  printf 'Expected one Casper kernel/initrd pair; found %s kernels and %s initrds.\n' \
+    "${#kernels[@]}" "${#initrds[@]}" >&2
+  exit 1
+fi
+kernel="/casper/${kernels[0]##*/}"
+initrd="/casper/${initrds[0]##*/}"
+temp_dir=$(mktemp -d)
+trap 'rm -rf "$temp_dir"' EXIT
+cat >"$temp_dir/grub.cfg" <<EOF
+set default=0
+set timeout=8
+search --no-floppy --file --set=root /casper/filesystem.squashfs
+menuentry 'Start Nova OS 1.2 (64-bit)' {
+    linux ${kernel} boot=casper quiet splash ---
+    initrd ${initrd}
+}
+menuentry 'Start Nova OS 1.2 (safe graphics)' {
+    linux ${kernel} boot=casper nomodeset ---
+    initrd ${initrd}
+}
+EOF
+grub-script-check "$temp_dir/grub.cfg"
+mkdir -p binary/EFI/BOOT binary/boot/grub
+grub-mkstandalone \
+  --format=x86_64-efi \
+  --directory=/usr/lib/grub/x86_64-efi \
+  --modules='part_gpt part_msdos fat iso9660 normal search search_fs_file linux configfile' \
+  --output=binary/EFI/BOOT/BOOTX64.EFI \
+  "boot/grub/grub.cfg=$temp_dir/grub.cfg"
+grub-mkstandalone \
+  --format=i386-efi \
+  --directory=/usr/lib/grub/i386-efi \
+  --modules='part_gpt part_msdos fat iso9660 normal search search_fs_file linux configfile' \
+  --output=binary/EFI/BOOT/BOOTIA32.EFI \
+  "boot/grub/grub.cfg=$temp_dir/grub.cfg"
+efi_image=binary/boot/grub/efi.img
+if [[ -e "$efi_image" ]]; then
+  printf 'Refusing to overwrite existing EFI image: %s\n' "$efi_image" >&2
+  exit 1
+fi
+truncate -s 64M "$efi_image"
+mkfs.vfat -F 32 -n NOVA_EFI "$efi_image" >/dev/null
+mmd -i "$efi_image" ::/EFI ::/EFI/BOOT
+mcopy -i "$efi_image" binary/EFI/BOOT/BOOTX64.EFI ::/EFI/BOOT/BOOTX64.EFI
+mcopy -i "$efi_image" binary/EFI/BOOT/BOOTIA32.EFI ::/EFI/BOOT/BOOTIA32.EFI
