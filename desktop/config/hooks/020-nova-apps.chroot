@@ -1,0 +1,37 @@
+#!/bin/sh
+set -eu
+arch="$(dpkg --print-architecture)"
+keyrings=/usr/share/keyrings
+sources=/etc/apt/sources.list.d
+mkdir -p "$keyrings" "$sources"
+
+curl -fsSL https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor --yes -o "$keyrings/google-chrome.gpg"
+printf 'deb [arch=%s signed-by=%s] https://dl.google.com/linux/chrome/deb/ stable main\n' "$arch" "$keyrings/google-chrome.gpg" > "$sources/google-chrome.list"
+
+curl -fsSLo "$keyrings/brave-browser-archive-keyring.gpg" https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
+curl -fsSLo "$sources/brave-browser-release.sources" https://brave-browser-apt-release.s3.brave.com/brave-browser.sources
+
+curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor --yes -o "$keyrings/microsoft.gpg"
+cat > "$sources/vscode.sources" <<EOF
+Types: deb
+URIs: https://packages.microsoft.com/repos/code
+Suites: stable
+Components: main
+Architectures: amd64 arm64 armhf
+Signed-By: $keyrings/microsoft.gpg
+EOF
+
+if [ ! -f /etc/apt/sources.list.d/microsoft-prod.list ] && [ ! -f /etc/apt/sources.list.d/microsoft-prod.sources ]; then
+  . /etc/os-release
+  curl -fsSLo /tmp/packages-microsoft-prod.deb "https://packages.microsoft.com/config/ubuntu/${VERSION_ID}/packages-microsoft-prod.deb"
+  dpkg -i /tmp/packages-microsoft-prod.deb
+fi
+
+apt-get update
+if [ "$arch" = amd64 ] || [ "$arch" = arm64 ]; then
+  apt-get install -y --no-install-recommends google-chrome-stable
+else
+  echo "Google Chrome stable is not published for $arch; skipping Chrome." >&2
+fi
+apt-get install -y --no-install-recommends brave-browser code powershell
+exit 0
