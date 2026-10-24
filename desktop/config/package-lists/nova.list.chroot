@@ -21,6 +21,9 @@ htop
 fastfetch
 calamares
 isolinux
+syslinux-utils
+grub-efi-amd64-bin
+grub-efi-ia32-bin
 fonts-noto-core
 fonts-noto-color-emoji
 language-pack-ar
