@@ -1,0 +1,7 @@
+{
+  "uuid": "nova-clock@nova-os",
+  "name": "Nova Bilingual Clock",
+  "description": "Shows time and date in Arabic and English at the top center.",
+  "version": 1,
+  "shell-version": ["50"]
+}
